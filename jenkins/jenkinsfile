@@ -1,0 +1,67 @@
+pipeline {
+    agent any
+    environment {
+        AZURE_CREDENTIALS_ID = 'azure-service-principal' // Jenkins Azure credentials ID
+        ACR_NAME = 'ACRthuantest'
+        AKS_NAME = 'cluster'
+        RESOURCE_GROUP = 'Cluster'
+        IMAGE_NAME = 'app' // Docker image name
+        TAG = 'v1' // Docker image tag
+        DOCKER_REGISTRY = "${ACR_NAME}.azurecr.io"
+    }
+    stages {
+        stage('Checkout code') {
+            steps {
+                // Checkout the source code from your repository
+                git branch: 'main', url: 'https://github.com/ntthuan0106/dacn.git'
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    // Build the Docker image
+                    sh 'docker build -t ${DOCKER_REGISTRY}/app/${IMAGE_NAME}:${TAG} .'
+                }
+            }
+        }
+        stage('Azure Login to ACR') {
+            steps {
+                script {
+                    withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS_ID)]) {
+                        sh '''
+                        az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+                        az acr login --name ${ACR_NAME}
+                        '''
+                    }
+                }
+            }
+        }
+        stage('Push Docker Image to ACR') {
+            steps {
+                script {
+                    // Push the image to ACR
+                    sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${TAG}'
+                }
+            }
+        }
+        stage('Deploy to AKS') {
+            steps {
+                script {
+                    withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS_ID)]) {
+                        // Get AKS credentials
+                        sh '''
+                        az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME}
+                        kubectl apply -f k8s-deployment.yml
+                        '''
+                    }
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Clean up Docker images after build to free space
+            sh 'docker rmi ${DOCKER_REGISTRY}/${IMAGE_NAME}:${TAG} || true'
+        }
+    }
+}
