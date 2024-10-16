@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deploy
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-deploy
+  template:
+    metadata:
+      labels:
+        app: app-deploy
+    spec:
+      containers:
+      - name: app
+        image: acrthuantest.azurecr.io/dacn/app:v1
+        ports:
+        - containerPort: 5000
