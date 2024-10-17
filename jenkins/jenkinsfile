@@ -54,6 +54,7 @@ pipeline {
                         pwd
                         ls
                         az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME}
+                        kubectl create namespace test
                         kubectl apply -f k8s/deployment.yml
                         '''
                 }
