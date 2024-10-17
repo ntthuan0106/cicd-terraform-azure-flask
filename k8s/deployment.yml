@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: app
-        image: acrthuantest.azurecr.io/dacn/app:v1
+        image: acrthuantest.azurecr.io/app:v1
         ports:
         - containerPort: 5000
