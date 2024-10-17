@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build --pull --rm -f "web-app\Dockerfile" -t ${DOCKER_REGISTRY}/app/${IMAGE_NAME}:${TAG} "web-app"'
+                    sh 'docker build --pull --rm -f "web-app/Dockerfile" -t ${DOCKER_REGISTRY}/${IMAGE_NAME}:${TAG} web-app'
                 }
             }
         }
