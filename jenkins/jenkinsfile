@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         AZURE_CREDENTIALS_ID = 'azure-service-principal' // Jenkins Azure credentials ID
-        ACR_NAME = 'ACRthuantest'
+        ACR_NAME = 'acrthuantest'
         AKS_NAME = 'cluster'
         RESOURCE_GROUP = 'Cluster'
         IMAGE_NAME = 'app' // Docker image name
@@ -20,7 +20,7 @@ pipeline {
             steps {
                 script {
                     // Build the Docker image
-                    sh 'docker build -t ${DOCKER_REGISTRY}/app/${IMAGE_NAME}:${TAG} .'
+                    sh 'docker build --pull --rm -f "web-app\Dockerfile" -t ${DOCKER_REGISTRY}/app/${IMAGE_NAME}:${TAG} "web-app"'
                 }
             }
         }
