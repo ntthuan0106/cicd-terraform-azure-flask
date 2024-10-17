@@ -1,10 +1,14 @@
 pipeline {
     agent any
     environment {
-        AZURE_CREDENTIALS_ID = 'azure-service-principal' // Jenkins Azure credentials ID
+        AZURE_CLIENT_ID=credentials('AZURE_CLIENT_ID')
+        AZURE_CLIENT_SECRET=credentials('AZURE_CLIENT_SECRET')
+        AZURE_TENANT_ID=credentials('AZURE_TENANT_ID')
+
+        RESOURCE_GROUP = 'Cluster'
         ACR_NAME = 'acrthuantest'
         AKS_NAME = 'cluster'
-        RESOURCE_GROUP = 'Cluster'
+        
         IMAGE_NAME = 'app' // Docker image name
         TAG = 'v1' // Docker image tag
         DOCKER_REGISTRY = "${ACR_NAME}.azurecr.io"
@@ -27,12 +31,10 @@ pipeline {
         stage('Azure Login to ACR') {
             steps {
                 script {
-                    withCredentials([azureServicePrincipal(credentialsId: AZURE_CREDENTIALS_ID)]) {
-                        sh '''
+                    sh '''
                         az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
                         az acr login --name ${ACR_NAME}
                         '''
-                    }
                 }
             }
         }
