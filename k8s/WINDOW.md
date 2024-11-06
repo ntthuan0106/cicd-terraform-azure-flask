@@ -2,7 +2,7 @@
 ## Prerequisites
 - Azure CLI
 - Kubectl
-- Helm
+- Helm v3.16.2
 - Docker engine
 - AKS cluster
 ## Build and push Docker image to ACR
