@@ -1,3 +1,4 @@
+##./.github/workflows/deploy_aks.yaml
 name: Deploy to AKS
 
 on:
@@ -8,7 +9,7 @@ on:
       - 'web-app/**'
       - '.github/workflows/**'
   workflow_run:
-    workflows: ["Build and Push Docker Images to ACR"]
+    workflows: ["Build and Push Docker Image to ACR"]
     types:
       - completed
 
