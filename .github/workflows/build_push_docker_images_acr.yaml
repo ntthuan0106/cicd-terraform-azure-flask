@@ -29,8 +29,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t acrthuantest.azurecr.io/app:v1
+          docker build --pull --rm -f "web-app\Dockerfile" -t ${{ secrets.ACR_LOGIN_SERVER }}/app:v1 "web-app"
 
       - name: Push Docker image to ACR
         run: |
-          docker push acrthuantest.azurecr.io/app:v1
+          docker push ${{ secrets.ACR_LOGIN_SERVER }}/app:v1
