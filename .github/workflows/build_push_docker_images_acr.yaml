@@ -6,6 +6,10 @@ on:
       - main  # Trigger the workflow when changes are pushed to the main branch
   workflow_dispatch:  # Allow manual triggering
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
