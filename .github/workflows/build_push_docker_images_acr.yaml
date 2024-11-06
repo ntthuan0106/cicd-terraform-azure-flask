@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Log in to Azure
         uses: azure/login@v2
@@ -29,7 +29,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build --pull --rm -f "web-app\Dockerfile" -t ${{ secrets.ACR_LOGIN_SERVER }}/app:v1 "web-app"
+          docker build --pull --rm -f "web-app/Dockerfile" -t ${{ secrets.ACR_LOGIN_SERVER }}/app:v1 "web-app"
 
       - name: Push Docker image to ACR
         run: |
