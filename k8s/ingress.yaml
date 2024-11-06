@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: ngrok
   rules:
-    - host: {Your Ngrok domain}
+    - host: bug-present-flamingo.ngrok-free.app
       http:
         paths:
           - path: /
