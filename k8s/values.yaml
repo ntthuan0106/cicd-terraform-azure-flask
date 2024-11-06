@@ -1,0 +1,9 @@
+credentials:
+  apiKey: {Your Ngrok API Key}
+  authtoken: {Your Ngrok Auth Token}
+
+tunnel:
+  name: store-tunnel
+  region: us
+  subdomain: {Your Ngrok subdomain}
+  addr: {Your Ngrok port}

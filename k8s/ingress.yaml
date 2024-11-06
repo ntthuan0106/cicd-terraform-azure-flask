@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: store-ingress
+  namespace: test
+spec:
+  ingressClassName: ngrok
+  rules:
+    - host: {Your Ngrok domain}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: vote-app-service
+                port:
+                  number: 5000
