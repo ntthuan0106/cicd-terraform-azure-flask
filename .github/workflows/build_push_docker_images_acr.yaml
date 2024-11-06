@@ -6,6 +6,7 @@ on:
       - main  # Trigger the workflow when changes are pushed to the main branch
     paths:
       - 'web-app/**'
+      - '.github/workflows/**'
   workflow_dispatch:  # Allow manual triggering
 
 permissions:
