@@ -43,11 +43,6 @@ jobs:
           run: |
             echo "apiKey: ${{ secrets.NGROK_API_KEY }}" > k8s/values.yaml
             echo "authtoken: ${{ secrets.NGROK_AUTH_TOKEN }}" >> k8s/values.yaml
-            echo "tunnel:" >> k8s/values.yaml
-            echo "  name: store-tunnel" >> k8s/values.yaml
-            echo "  region: us" >> k8s/values.yaml
-            echo "  subdomain: bug-present-flamingo.ngrok-free.app" >> k8s/values.yaml
-            echo "  addr: 5000" >> k8s/values.yaml
             helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
             --namespace test \
             --create-namespace \
