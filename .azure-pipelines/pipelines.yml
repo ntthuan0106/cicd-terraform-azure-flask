@@ -1,0 +1,41 @@
+# pipelines.yml
+
+trigger:
+  branches:
+    include:
+      - main  # Adjust to your desired branch
+
+# Import variables from variables.yml
+variables:
+- template: 'variables.yml'
+- group: 'NGROK'
+- group: 'AZURE_CREDENTIALS'
+
+stages:
+- stage: BuildAndPush
+  jobs:
+  - job: BuildAndPushToACR
+    displayName: Build and Push Docker Image to ACR
+    pool:
+      vmImage: 'ubuntu-latest'
+    
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: '$(AZURE_SUBSCRIPTION_ID)'  # Replace with your service connection
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          # Log in to ACR
+          az acr login --name $(acrName)
+          
+          # Build the Docker image
+          docker build --pull --rm -f "web-app/Dockerfile" -t $(acrName)/$(imageName):1 .
+          
+          # Push the image to ACR
+          docker push $(acrName)/$(imageName):1
+      displayName: 'Build and Push Docker Image'
+      
+    - script: |
+        echo "##vso[task.setvariable variable=imageTag]$(Build.BuildId)"
+      displayName: 'Set Image Tag Variable'
