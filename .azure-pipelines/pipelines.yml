@@ -5,7 +5,7 @@ trigger:
     include:
       - main
 resources:
-- repo: https://github.com/ntthuan0106/dacn
+- repo: self
 
 # Import variables from variables.yml
 variables:
