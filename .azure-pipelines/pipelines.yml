@@ -1,33 +1,12 @@
-# pipelines.yml
-
 trigger:
-  branches:
-    include:
-      - main
-resources:
-- repo: self
+  - main  # or specify any branch you want to trigger this pipeline on
 
-# Import variables from variables.yml
-variables:
-- template: '.azure-pipelines/variables.yml'
-- group: 'NGROK'
-- group: 'AZURE_CREDENTIALS'
+pool:
+  vmImage: 'ubuntu-latest'  # Specify the virtual machine image to use
 
-stages:
-- stage: BuildAndPush
-  jobs:
-  - job: BuildAndPushToACR
-    displayName: Build and Push Docker Image to ACR
-    pool:
-      vmImage: 'ubuntu-latest'
-    
-    steps:
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        Dockerfile: $(dockerFilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        repository: $(imageName)
-        tags: |
-          $(tag)
+jobs:
+- job: RunPwdCommand
+  displayName: "Run pwd Command"
+  steps:
+    - script: pwd
+      displayName: "Print Working Directory"
