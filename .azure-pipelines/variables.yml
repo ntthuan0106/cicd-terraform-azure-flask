@@ -1,5 +1,6 @@
 # variables.yml
 variables:
+    dockerRegistryServiceConnection: 'ACRthuantest'
     dockerFilePath: './web-app/Dockerfile'
     containerRegistry: 'acrthuantest.azurecr.io'
     imageName: 'app'
