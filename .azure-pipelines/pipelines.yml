@@ -13,7 +13,7 @@ resources:
 
 # Import variables from variables.yml
 variables:
-- template: '.azure-pipelines/variables.yml'
+- template: './variables.yml'
 - group: 'NGROK'
 - group: 'AZURE_CREDENTIALS'
 
