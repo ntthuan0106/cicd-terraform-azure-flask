@@ -5,7 +5,11 @@ trigger:
     include:
       - main
 resources:
-- repo: self
+  repositories:
+    - repository: dacn
+      type: github
+      name: 'ntthuan0106/dacn'
+      endpoint: 'ntthuan0106'
 
 # Import variables from variables.yml
 variables:
