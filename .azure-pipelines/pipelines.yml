@@ -4,6 +4,8 @@ trigger:
   branches:
     include:
       - main
+resources:
+- repo: self
 
 # Import variables from variables.yml
 variables:
