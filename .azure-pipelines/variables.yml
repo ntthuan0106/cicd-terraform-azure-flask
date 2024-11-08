@@ -1,2 +1,5 @@
-acrName: "acrthuantest.azurecr.io"
-imageName: "app"                
+# variables.yml
+variables:
+    acrName: "youracrname"       # Replace with your Azure Container Registry name
+    imageName: "yourimagename"   # Replace with your Docker image name
+  
