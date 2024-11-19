@@ -5,5 +5,4 @@ variables:
     containerRegistry: 'acrthuantest.azurecr.io'
     imageName: 'app'
     imageTag: 'v1'
-    test: 'hi'
   

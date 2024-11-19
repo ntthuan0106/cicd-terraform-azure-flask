@@ -26,6 +26,11 @@ stages:
       name: 'DACN'
       demand: Agent.Name -equals Agent1_DACN
     steps:
+    - task: LoginACR
+      displayName: Login to ACR
+      inputs:
+        command: login
+        containerRegistry: $(dockerRegistryServiceConnection)
     - task: Docker@2
       displayName: Build and push an image to container registry
       inputs:
@@ -34,4 +39,4 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         repository: $(imageName)
         tags: |
-          $(tag)
+          $(imageTag)
