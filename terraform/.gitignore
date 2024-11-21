@@ -4,4 +4,4 @@ terraform.tfstate.backup
 ProvidersSecrets.tfvars
 .env
 .terraform.lock.hcl
-variables.tfvars
+values.tfvars
