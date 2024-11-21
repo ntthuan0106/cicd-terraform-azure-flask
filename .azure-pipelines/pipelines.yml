@@ -48,4 +48,5 @@ stages:
       name: 'Default'
       demands: Agent.Name -equals Agent1_DACN
     steps:
-    - script: pwd
+    - bash: |
+        pwd
