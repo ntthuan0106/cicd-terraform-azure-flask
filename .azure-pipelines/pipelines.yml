@@ -50,3 +50,4 @@ stages:
     steps:
     - bash: |
         pwd
+        ls
