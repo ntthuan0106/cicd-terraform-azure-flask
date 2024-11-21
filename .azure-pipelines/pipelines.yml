@@ -23,7 +23,7 @@ stages:
   - job: BuildAndPushToACR
     displayName: Build and Push Docker Image to ACR
     pool: 
-      name: 'DACN'
+      name: 'Default'
       demand: Agent.Name -equals Agent1_DACN
     steps:
     - task: Docker@2
