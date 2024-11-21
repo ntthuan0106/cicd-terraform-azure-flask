@@ -40,3 +40,12 @@ stages:
         repository: $(imageName)
         tags: |
           $(imageTag)
+- stage: Deploy
+  jobs: 
+  - job: Deploy
+    displayName: Deploy To AKS
+    pool:
+      name: 'Default'
+      demands: Agent.Name -equals Agent1_DACN
+    steps:
+    - script: pwd
