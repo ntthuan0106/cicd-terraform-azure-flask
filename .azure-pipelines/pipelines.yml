@@ -62,7 +62,7 @@ stages:
         helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
           --namespace test \
           --create-namespace \
-          -f values.yaml
+          -f ./k8s/values.yaml
       displayName: Install ngrok helm chart
     - task: Kubernetes@1
       inputs:
