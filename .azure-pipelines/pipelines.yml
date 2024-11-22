@@ -59,10 +59,16 @@ stages:
     - bash: |
         echo "Install ngrok helm chart"
         helm repo add ngrok https://charts.ngrok.com
-        helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
-          --namespace test \
-          --create-namespace \
-          -f ./k8s/values.yaml
+      displayName: Install ngrok helm repository
+    - task: HelmDeploy@1
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceConnection: $(aksServiceConnection)
+        command: install
+        chartType: 'Name'
+        chartName: 'ngrok/kubernetes-ingress-controller'
+        releaseName: 'ngrok-ingress-controller'
+        valueFile: ./k8s/values.yaml
       displayName: Install ngrok helm chart
     - task: Kubernetes@1
       inputs:
