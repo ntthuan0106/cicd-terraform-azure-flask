@@ -65,6 +65,7 @@ stages:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceConnection: $(aksServiceConnection)
         command: install
+        namespace: 'test'
         chartType: 'Name'
         chartName: 'ngrok/kubernetes-ingress-controller'
         releaseName: 'ngrok-ingress-controller'
