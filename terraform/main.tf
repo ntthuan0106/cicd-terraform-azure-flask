@@ -3,6 +3,7 @@ module "acr_attach_aks" {
   rg_name = "Cluster"
   acr_name = "ACRthuantest"
   k8s_cluster_name = "cluster"
+  aks_namespace = "test"
 }
 module "AzDO_project" {
   source = "./modules/AzDevOps"
@@ -10,12 +11,13 @@ module "AzDO_project" {
 
   acr_svc_endpoint_name = "ACRthuantest"
   acr_resource_group_name = module.acr_attach_aks.rg_name
-  acr_target_name = "ACRthuantest"
+  acr_target_name = module.acr_attach_aks.acr_name
 
   azdo_svc_ep_k8s_name = "AKSthuantest"
   aks_cluster_name = module.acr_attach_aks.aks_cluster_name
   aks_resource_group_name = module.acr_attach_aks.rg_name
   k8s_api_server_url = module.acr_attach_aks.aks_api_server_url
+  cluster_namespace_name = module.acr_attach_aks.aks_namespace_name
 
   azure_client_id = var.client_id
   azure_client_secret = var.client_secret

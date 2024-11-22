@@ -42,6 +42,7 @@ resource "azuredevops_serviceendpoint_kubernetes" "az_aks" {
     tenant_id         = var.azure_tenant_id
     resourcegroup_id  = var.aks_resource_group_name
     cluster_name      = var.aks_cluster_name
+    namespace = var.cluster_namespace_name
     cluster_admin = true
   }
 }

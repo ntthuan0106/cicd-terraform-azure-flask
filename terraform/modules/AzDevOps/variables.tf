@@ -69,3 +69,6 @@ variable "NGROK_TOKEN" {
   sensitive = true
   description = "ngrok token"
 }
+variable "cluster_namespace_name" {
+  type = string
+}
