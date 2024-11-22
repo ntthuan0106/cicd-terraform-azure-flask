@@ -5,4 +5,7 @@ variables:
     containerRegistry: 'acrthuantest.azurecr.io'
     imageName: 'app'
     imageTag: 'v1'
+
+    aksServiceConnection: 'AKSthuantest'
+
   

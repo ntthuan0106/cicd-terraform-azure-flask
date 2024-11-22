@@ -49,5 +49,25 @@ stages:
       demands: Agent.Name -equals Agent1_DACN
     steps:
     - bash: |
-        pwd
-        ls
+        echo "Updating values.yaml with environment variables..."
+        yq eval ".credentials.apiKey = $(NGROK_API_KEY)" -i ./k8s/values.yaml
+        yq eval ".credentials.authtoken = env.NGROK_AUTH_TOKEN" -i ./k8s/values.yaml
+      displayName: Overwrite values.yaml
+    - bash: |
+        echo "Install ngrok helm chart"
+        helm repo add ngrok https://charts.ngrok.com
+        helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
+          --namespace test \
+          --create-namespace \
+          -f values.yaml
+      displayName: Install ngrok helm chart
+    - task: Kubernetes@1
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: $(aksServiceConnection)
+        command: apply
+        arguments: |
+          -f ./k8s/deployment.yaml
+          -f ./k8s/service.yaml
+          -f ./k8s/ingress.yaml
+        
