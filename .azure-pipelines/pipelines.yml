@@ -72,6 +72,8 @@ stages:
         valueFile: ./k8s/values.yaml
       displayName: Install ngrok helm chart
     - task: Kubernetes@1
+      displayName: Deploying to Aks
+      condition: alway()
       inputs:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: $(aksServiceConnection)
