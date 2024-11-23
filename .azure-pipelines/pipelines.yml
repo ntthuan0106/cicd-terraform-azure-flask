@@ -73,7 +73,7 @@ stages:
       displayName: Install ngrok helm chart
     - task: Kubernetes@1
       displayName: Deploying to Aks
-      condition: alway()
+      condition: always()
       inputs:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: $(aksServiceConnection)
