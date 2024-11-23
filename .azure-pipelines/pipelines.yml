@@ -72,15 +72,29 @@ stages:
         valueFile: ./k8s/values.yaml
       displayName: Install ngrok helm chart
     - task: Kubernetes@1
-      displayName: Deploying to Aks
+      displayName: Apply Deployment
       condition: always()
       inputs:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: $(aksServiceConnection)
         command: apply
         useConfigurationFile: true
-        configuration: |
-          - ./k8s/deployment.yaml
-          - ./k8s/service.yaml
-          - ./k8s/ingress.yaml
-        
+        configuration: ./k8s/deployment.yaml
+    - task: Kubernetes@1
+      displayName: Deploying Service
+      condition: always()
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: $(aksServiceConnection)
+        command: apply
+        useConfigurationFile: true
+        configuration: ./k8s/service.yaml
+    - task: Kubernetes@1
+      displayName: Apply Ingress
+      condition: always()
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: $(aksServiceConnection)
+        command: apply
+        useConfigurationFile: true
+        configuration: ./k8s/ingress.yaml
