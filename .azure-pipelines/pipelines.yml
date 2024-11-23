@@ -76,8 +76,9 @@ stages:
         connectionType: 'Kubernetes Service Connection'
         kubernetesServiceEndpoint: $(aksServiceConnection)
         command: apply
-        arguments: |
-          -f ./k8s/deployment.yaml
-          -f ./k8s/service.yaml
-          -f ./k8s/ingress.yaml
+        useConfigurationFile: true
+        configuration: |
+          ./k8s/deployment.yaml
+          ./k8s/service.yaml
+          ./k8s/ingress.yaml
         
