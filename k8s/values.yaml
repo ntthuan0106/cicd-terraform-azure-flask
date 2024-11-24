@@ -7,4 +7,4 @@ tunnel:
   name: store-tunnel
   region: us
   subdomain: bug-present-flamingo.ngrok-free.app
-  addr: 5000
+  addr: 80
