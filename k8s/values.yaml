@@ -1,0 +1,4 @@
+# values.yaml
+credentials:
+  apiKey: {}
+  authtoken: {}
