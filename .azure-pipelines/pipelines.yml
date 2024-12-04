@@ -52,6 +52,11 @@ stages:
         echo "Install ngrok helm chart"
         helm repo add ngrok https://charts.ngrok.com
       displayName: Install ngrok helm repository
+    - bash: |
+        echo "Updating values.yaml with environment variables..."
+        yq eval ".credentials.apiKey = \$(NGROK_API_KEY)\" -i ./k8s/values.yaml
+        yq eval ".credentials.authtoken = \$(NGROK_AUTH_TOKEN)\" -i ./k8s/values.yaml
+      displayName: Overwrite values.yaml
     - task: HelmDeploy@1
       inputs:
         connectionType: 'Kubernetes Service Connection'
@@ -62,9 +67,6 @@ stages:
         chartName: 'ngrok/kubernetes-ingress-controller'
         releaseName: 'ngrok-ingress-controller'
         valueFile: ./k8s/values.yaml
-        arguments: |
-          --set credentials.apiKey=$(NGROK_API_KEY) \
-          --set credentials.authtoken=$(NGROK_TOKEN)
       displayName: Install ngrok helm chart
     - bash: |
         echo "Updating secret with environment variables..."
