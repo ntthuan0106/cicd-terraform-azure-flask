@@ -1,14 +1,5 @@
 #ingress.yaml
 ---
-kind: Secret
-apiVersion: v1
-metadata:
-  name: ngrok-oauth-secret
-  namespace: test
-type: Opaque
-data:
-  NGROK_CLIENT_SECRET: {}
----
 kind: NgrokModuleSet
 apiVersion: ingress.k8s.ngrok.com/v1alpha1
 metadata:
