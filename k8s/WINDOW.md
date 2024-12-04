@@ -39,8 +39,20 @@ az aks get-credentials --resource-group Cluster --name cluster
 ```bash
 helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller `
   --namespace test `
-  --create-namespace `
-  -f values.yaml
+  --set credentials.apiKey=$(NGROK_API_KEY) `
+  --set credentials.authtoken=$(NGROK_AUTH_TOKEN)
+```
+6. Encode client secret to base64 encode in powershell
+```bash
+a String to Base64 in PowerShell
+# Define your plain text secret
+$plainText = $CLIENT_SECRET
+
+# Convert the plain text to a Base64 string
+$BASE64_ENC_CLIENT_SECRET = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($plainText))
+
+# Output the Base64 encoded string
+Write-Output $BASE64_ENC_CLIENT_SECRET
 ```
 ## Deploy web app to aks
 ```bash
