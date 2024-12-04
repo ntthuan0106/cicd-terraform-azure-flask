@@ -56,6 +56,9 @@ stages:
         echo "Updating values.yaml with environment variables..."
         yq eval ".credentials.apiKey = \$(NGROK_API_KEY)\" -i ./k8s/values.yaml
         yq eval ".credentials.authtoken = \$(NGROK_AUTH_TOKEN)\" -i ./k8s/values.yaml
+      env:
+        NGROK_API_KEY: $(NGROK_API_KEY)
+        NGROK_AUTH_TOKEN: $(NGROK_AUTH_TOKEN)
       displayName: Overwrite values.yaml
     - task: HelmDeploy@1
       inputs:
