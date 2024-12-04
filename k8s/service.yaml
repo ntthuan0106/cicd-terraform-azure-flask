@@ -6,9 +6,9 @@ metadata:
   namespace: test
 spec:
   selector:
-    app: app-deploy-1
+    app: app-deploy
   ports:
-  - name: app-port-1
+  - name: app-port
     protocol: TCP
     port: 5001
     targetPort: 5001
