@@ -19,7 +19,7 @@ metadata:
   name: ngrok-tunnel-set
   namespace: test
 spec:
-  forwardsTo: vote-app-service.test.svc.cluster.local:5001
+  forwardsTo: app-service.test.svc.cluster.local:5001
   labels: 
     edge: "edghts_2pikBBwNZKGP62cKPD9NrQVzAEP"
     k8s.ngrok.com/namespace: test
