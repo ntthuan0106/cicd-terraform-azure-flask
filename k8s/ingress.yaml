@@ -32,7 +32,7 @@ spec:
   labels: 
     edge: "edghts_2pikBBwNZKGP62cKPD9NrQVzAEP"
     k8s.ngrok.com/namespace: test
-    k8s.ngrok.com/service: vote-app-service-1
+    k8s.ngrok.com/service: vote-app-service
     k8s.ngrok.com/port: "80"
 ---
 apiVersion: networking.k8s.io/v1
