@@ -73,7 +73,7 @@ stages:
       displayName: Install ngrok helm chart
     - bash: |
         echo "Updating secret with environment variables..."
-        yq eval ".data.CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/ingress.yaml
+        yq eval ".data.NGROK_CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/ingress.yaml
       displayName: 'Overwrite CLIENT_SECRET'
       env:
         NGROK_CLIENT_SECRET: $(NGROK_CLIENT_SECRET)
