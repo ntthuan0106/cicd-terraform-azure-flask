@@ -24,7 +24,7 @@ spec:
     edge: "edghts_2pikBBwNZKGP62cKPD9NrQVzAEP"
     k8s.ngrok.com/namespace: test
     k8s.ngrok.com/service: app-service
-    k8s.ngrok.com/port: "80"
+    k8s.ngrok.com/port: "5001"
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
