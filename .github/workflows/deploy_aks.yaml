@@ -44,24 +44,27 @@ jobs:
             sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq
             sudo chmod +x /usr/bin/yq
 
-        - name: Update values.yaml
-          env:
-            NGROK_API_KEY: ${{ secrets.NGROK_API_KEY }}
-            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        - name: Update secrets.yaml
           run: |
-            yq eval ".credentials.apiKey = \"$NGROK_API_KEY\"" -i ./k8s/values.yaml
-            yq eval ".credentials.authtoken = \"$NGROK_AUTH_TOKEN\"" -i ./k8s/values.yaml
+            echo "Updating secret with environment variables..."
+            yq eval ".data.NGROK_CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/secrets.yaml
+          env:
+            NGROK_CLIENT_SECRET: ${{ secrets.NGROK_CLIENT_SECRET }}
           
-
         - name: Install Ngrok Kubernetes Ingress Controller
           run: |
             helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
               --namespace test \
               --create-namespace \
-              -f k8s/values.yaml
+              --set credentials.apiKey=${NGROK_API_KEY} \
+              --set credentials.authtoken=${NGROK_AUTH_TOKEN}
+          env:
+            NGROK_API_KEY: ${{ secrets.NGROK_API_KEY }}
+            NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
     
         - name: Deploy web app to AKS
           run: |
             kubectl apply -f k8s/deployment.yaml
             kubectl apply -f k8s/service.yaml
+            kubectl apply -f k8s/secrets.yaml
             kubectl apply -f k8s/ingress.yaml
