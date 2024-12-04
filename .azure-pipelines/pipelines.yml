@@ -63,7 +63,7 @@ stages:
         releaseName: 'ngrok-ingress-controller'
         valueFile: ./k8s/values.yaml
         arguments: |
-          --set credentials.apiKey=$(NGROK_API_KEY)
+          --set credentials.apiKey=$(NGROK_API_KEY) \
           --set credentials.authtoken=$(NGROK_TOKEN)
       displayName: Install ngrok helm chart
     - bash: |
