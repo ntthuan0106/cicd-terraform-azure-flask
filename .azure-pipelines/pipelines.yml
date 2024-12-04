@@ -49,14 +49,6 @@ stages:
       demands: Agent.Name -equals Agent1_DACN
     steps:
     - bash: |
-        echo "Updating values.yaml with environment variables..."
-        yq eval ".credentials.apiKey = \"$(NGROK_API_KEY)\"" -i ./k8s/values.yaml
-        yq eval ".credentials.authtoken = \"$(NGROK_TOKEN)\"" -i ./k8s/values.yaml
-      env:
-        NGROK_API_KEY: $(NGROK_API_KEY)
-        NGROK_AUTH_TOKEN: $(NGROK_TOKEN)
-      displayName: Overwrite values.yaml
-    - bash: |
         echo "Install ngrok helm chart"
         helm repo add ngrok https://charts.ngrok.com
       displayName: Install ngrok helm repository
@@ -70,7 +62,16 @@ stages:
         chartName: 'ngrok/kubernetes-ingress-controller'
         releaseName: 'ngrok-ingress-controller'
         valueFile: ./k8s/values.yaml
+        arguments: |
+          --set credentials.apiKey=$(NGROK_API_KEY)
+          --set credentials.authtoken=$(NGROK_TOKEN)
       displayName: Install ngrok helm chart
+    - bash: |
+        echo "Updating secret with environment variables..."
+        yq eval '.data.CLIENT_SECRET = \"$(NGROK_CLIENT_SECRET)\"" -i ./k8s/ingress.yaml
+      displayName: 'Overwrite CLIENT_SECRET'
+      env:
+        NGROK_CLIENT_SECRET: $(NGROK_CLIENT_SECRET)
     - task: Kubernetes@1
       displayName: Apply Deployment
       condition: always()
