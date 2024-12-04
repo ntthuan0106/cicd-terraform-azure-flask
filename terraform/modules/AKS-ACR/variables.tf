@@ -11,6 +11,3 @@ variable "k8s_cluster_name" {
 variable "acr_name" {
   type = string
 }
-variable "aks_namespace" {
-  type = string
-}

@@ -26,6 +26,14 @@ variable "NGROK_TOKEN" {
   description = "NGROK API token"
   type = string
 }
+variable "NGROK_CLIENT_ID" {
+  type = string
+  description = "ngrok client id"
+}
+variable "NGROK_CLIENT_SECRET" {
+  type = string
+  description = "ngrok client secret base64 encoded"
+}
 variable "tf_AzDO_ORGANIZATION" {
   type = string
   description = "Azure devops organization"

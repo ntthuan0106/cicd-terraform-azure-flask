@@ -27,6 +27,3 @@ output "aks_cluster_name" {
 output "acr_name" {
   value = azurerm_container_registry.acr.name
 }
-output "aks_namespace_name" {
-  value = kubernetes_namespace.aks_namespace.metadata.0.name
-}

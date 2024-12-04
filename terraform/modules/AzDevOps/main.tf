@@ -57,10 +57,19 @@ resource "azuredevops_variable_group" "NGROK" {
     secret_value = var.NGROK_API_KEY
     is_secret = true
   }
-
   variable {
     name = "NGROK_TOKEN"
     secret_value = var.NGROK_TOKEN
+    is_secret = true
+  }
+  variable {
+    name = "NGROK_CLIENT_ID"
+    secret_value = var.NGROK_CLIENT_ID
+    is_secret = true
+  }
+  variable {
+    name = "NGROK_CLIENT_SECRET"
+    secret_value = var.NGROK_CLIENT_SECRET
     is_secret = true
   }
 }
