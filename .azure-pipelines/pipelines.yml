@@ -73,7 +73,7 @@ stages:
       displayName: Install ngrok helm chart
     - bash: |
         echo "Updating secret with environment variables..."
-        yq eval ".data.NGROK_CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/ingress.yaml
+        yq eval ".data.NGROK_CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/secrets.yaml
       displayName: 'Overwrite CLIENT_SECRET'
       env:
         NGROK_CLIENT_SECRET: $(NGROK_CLIENT_SECRET)
@@ -96,6 +96,15 @@ stages:
         command: apply
         useConfigurationFile: true
         configuration: ./k8s/service.yaml
+    - task: Kubernetes@1
+      displayName: Apply Secrets
+      condition: always()
+      inputs:
+        connectionType: 'Kubernetes Service Connection'
+        kubernetesServiceEndpoint: $(aksServiceConnection)
+        command: apply
+        useConfigurationFile: true
+        configuration: ./k8s/secrets.yaml
     - task: Kubernetes@1
       displayName: Apply Ingress
       condition: always()
