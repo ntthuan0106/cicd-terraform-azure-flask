@@ -50,7 +50,7 @@ pipeline {
                 script{
                     sh'''
                     echo "Updating secret with environment variables..."
-                    yq eval ".data.NGROK_CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/secrets.yaml
+                    yq eval '.data.NGROK_CLIENT_SECRET = "${NGROK_CLIENT_SECRET}"' -i ./k8s/secrets.yaml
                     '''
                 }
             }
