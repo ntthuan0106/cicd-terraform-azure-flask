@@ -62,7 +62,7 @@ pipeline {
                     sh '''
                     pwd
                     ls
-                    az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME}
+                    az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME} --overwrite-existing=true
                     kubectl create namespace test
                     helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
                         --namespace test \
