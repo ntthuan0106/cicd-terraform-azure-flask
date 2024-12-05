@@ -48,10 +48,13 @@ pipeline {
         stage('Overwrite values'){
             steps{
                 script{
-                    sh'''
-                    echo "Updating secret with environment variables..."
-                    yq eval ".data.NGROK_CLIENT_SECRET = \"$NGROK_CLIENT_SECRET\"" -i ./k8s/secrets.yaml
-                    '''
+                    // Encode NGROK_CLIENT_SECRET in base64
+                    def encodedSecret = sh(script: "echo -n \"$NGROK_CLIENT_SECRET\" | base64", returnStdout: true).trim()
+                    // Update the secrets.yaml file with the base64 encoded secret
+                    sh """
+                    echo "Updating secret with base64 encoded NGROK_CLIENT_SECRET..."
+                    yq eval ".data.NGROK_CLIENT_SECRET = \"$encodedSecret\"" -i ./k8s/secrets.yaml
+                    """
                 }
             }
         }
