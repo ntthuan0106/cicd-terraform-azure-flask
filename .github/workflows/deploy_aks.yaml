@@ -63,6 +63,7 @@ jobs:
           env:
             NGROK_API_KEY: ${{ secrets.NGROK_API_KEY }}
             NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+          continue-on-error: true
     
         - name: Deploy web app to AKS
           run: |
