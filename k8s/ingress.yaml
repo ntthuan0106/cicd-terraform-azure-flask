@@ -21,7 +21,7 @@ metadata:
 spec:
   forwardsTo: app-service.test.svc.cluster.local:5001
   labels: 
-    edge: "edghts_2pikBBwNZKGP62cKPD9NrQVzAEP"
+    edge: "edghts_2pnZX3lJLH8ccZq6LGs72FQwOAc"
     k8s.ngrok.com/namespace: test
     k8s.ngrok.com/service: app-service
     k8s.ngrok.com/port: "5001"
