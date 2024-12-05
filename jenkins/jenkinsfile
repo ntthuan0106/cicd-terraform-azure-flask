@@ -53,7 +53,7 @@ pipeline {
                     // Update the secrets.yaml file with the base64 encoded secret
                     sh """
                     echo "Updating secret with base64 encoded NGROK_CLIENT_SECRET..."
-                    yq eval ".data.NGROK_CLIENT_SECRET = \"$encodedSecret\"" -i ./k8s/secrets.yaml
+                    yq eval '.data.NGROK_CLIENT_SECRET = \"$encodedSecret\"' -i ./k8s/secrets.yaml
                     """
                 }
             }
