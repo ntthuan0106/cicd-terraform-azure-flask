@@ -12,6 +12,10 @@ pipeline {
         IMAGE_NAME = 'app' // Docker image name
         TAG = 'v1' // Docker image tag
         DOCKER_REGISTRY = "${ACR_NAME}.azurecr.io"
+
+        NGROK_API_KEY=credentials('NGROK_API_KEY')
+        NGROK_AUTH_TOKEN=credentials('NGROK_AUTH_TOKEN')
+        NGROK_CLIENT_SECRET=credentials('NGROK_CLIENT_SECRET')
     }
     stages {
         stage('Checkout code') {
@@ -28,35 +32,48 @@ pipeline {
                 }
             }
         }
-        stage('Azure Login to ACR') {
-            steps {
-                script {
-                    sh '''
-                        az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
-                        az acr login --name ${ACR_NAME}
-                        '''
-                }
-            }
-        }
         stage('Push Docker Image to ACR') {
             steps {
                 script {
                     // Push the image to ACR
-                    sh 'docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${TAG}'
+                    sh 
+                    '''
+                    echo "Login to ACR"
+                    az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
+                    az acr login --name ${ACR_NAME}
+                    docker push ${DOCKER_REGISTRY}/${IMAGE_NAME}:${TAG}
+                    '''
+                }
+            }
+        }
+        stage('Overwrite values'){
+            steps{
+                script{
+                    sh'''
+                    echo "Updating secret with environment variables..."
+                    yq eval ".data.NGROK_CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/secrets.yaml
+                    '''
                 }
             }
         }
         stage('Deploy to AKS') {
             steps {
                 script {
-                        // Get AKS credentials
-                        sh '''
-                        pwd
-                        ls
-                        az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME}
-                        kubectl create namespace test
-                        kubectl apply -f k8s/deployment.yml
-                        '''
+                    // Get AKS credentials
+                    sh '''
+                    pwd
+                    ls
+                    az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME}
+                    kubectl create namespace test
+                    helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
+                        --namespace test \
+                        --set credentials.apiKey=$NGROK_API_KEY \
+                        --set credentials.authtoken=$NGROK_AUTH_TOKEN
+                    kubectl apply -f k8s/deployment.yaml
+                    kubectl apply -f k8s/service.yaml
+                    kubectl apply -f k8s/secrets.yaml
+                    kubectl apply -f k8s/ingress.yaml
+                    '''
                 }
             }
         }
