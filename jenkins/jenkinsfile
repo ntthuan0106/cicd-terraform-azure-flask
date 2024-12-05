@@ -36,8 +36,7 @@ pipeline {
             steps {
                 script {
                     // Push the image to ACR
-                    sh 
-                    '''
+                    sh '''
                     echo "Login to ACR"
                     az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant $AZURE_TENANT_ID
                     az acr login --name ${ACR_NAME}
