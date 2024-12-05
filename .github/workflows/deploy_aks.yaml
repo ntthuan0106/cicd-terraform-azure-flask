@@ -8,6 +8,7 @@ on:
     paths:
       - 'web-app/**'
       - '.github/workflows/**'
+      - 'k8s/**'
   workflow_run:
     workflows: ["Build and Push Docker Image to ACR"]
     types:
