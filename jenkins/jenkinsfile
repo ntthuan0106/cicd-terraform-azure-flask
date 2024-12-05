@@ -55,19 +55,43 @@ pipeline {
                 }
             }
         }
+        stage('Login to AKS'){
+            steps{
+                script{
+                    sh'''
+                    echo "Login AKS"
+                    az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME} --overwrite-existing
+                    '''
+                }
+            }
+        }
+        stage('Helm install') {
+            steps {
+                script {
+                    def helmStatus = sh(
+                        script: '''
+                            echo "Helm install"
+                            helm repo add ngrok https://charts.ngrok.com
+                            helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
+                                --namespace test \
+                                --create-namespace \
+                                --set credentials.apiKey=$NGROK_API_KEY \
+                                --set credentials.authtoken=$NGROK_AUTH_TOKEN
+                        ''',
+                        returnStatus: true  // Capture the exit status but continue even if it fails
+                    )
+                    // Optionally handle failure of Helm install
+                    if (helmStatus != 0) {
+                        echo "Helm installation failed, but continuing to next stage"
+                    }
+                }
+            }
+        }
         stage('Deploy to AKS') {
             steps {
                 script {
                     // Get AKS credentials
                     sh '''
-                    pwd
-                    ls
-                    az aks get-credentials --resource-group ${RESOURCE_GROUP} --name ${AKS_NAME} --overwrite-existing
-                    kubectl create namespace test
-                    helm install ngrok-ingress-controller ngrok/kubernetes-ingress-controller \
-                        --namespace test \
-                        --set credentials.apiKey=$NGROK_API_KEY \
-                        --set credentials.authtoken=$NGROK_AUTH_TOKEN
                     kubectl apply -f k8s/deployment.yaml
                     kubectl apply -f k8s/service.yaml
                     kubectl apply -f k8s/secrets.yaml
