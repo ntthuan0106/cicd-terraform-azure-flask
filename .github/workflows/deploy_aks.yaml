@@ -48,6 +48,7 @@ jobs:
           run: |
             echo "Updating secret with environment variables..."
             yq eval ".data.NGROK_CLIENT_SECRET = \"${NGROK_CLIENT_SECRET}\"" -i ./k8s/secrets.yaml
+            cat ./k8s/secrets.yaml
           env:
             NGROK_CLIENT_SECRET: ${{ secrets.NGROK_CLIENT_SECRET }}
           
