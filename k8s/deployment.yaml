@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: app
-        image: acrthuantest.azurecr.io/app:v1
+        image: 492804330065.dkr.ecr.us-east-1.amazonaws.com/flask/monitor:v1
         ports:
         - containerPort: 5001
         env:
